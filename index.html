@@ -6,5 +6,16 @@
     <script type="text/javascript" src="gol.js"></script>
   </head>
   <body>
+    <canvas id="myCanvas" width="300" height="300"></canvas>
+    <script type="text/javascript">
+      var world = new World();
+      world.randomize(40)
+      world.draw("myCanvas");
+
+      window.setInterval(function () {
+        world.evolve();
+        world.draw("myCanvas");
+      }, 500);
+    </script>
   </body>
 </html>

@@ -45,6 +45,43 @@ class World
     for coord of @living
       living_list.push(coord)
     living_list
+
+  draw: (canvasId) ->
+    canvas = document.getElementById canvasId
+    canvas.width = canvas.width
+    context = canvas.getContext '2d'
+
+    context.fillStyle = '#444'
+    context.strokeStyle = 'black'
+    context.lineWidth = '1'
+    cell_height = 10
+    cell_width = 10
+
+    min_row = 0
+    min_col = 0
+    max_row = 0
+    max_col = 0
+
+    for coord of @living
+      [row, col] = @living[coord]
+      min_row = row if row < min_row
+      min_col = col if col < min_col
+      max_row = row if row > max_row
+      max_col = col if col > max_col
+
+    for coord of @living
+      [row, col] = @living[coord]
+      console.log "drawing (#{row}, #{col})"
+      context.beginPath()
+      context.rect((row-min_row)*cell_height, (col-min_col)*cell_width, cell_width, cell_height)
+      context.fill()
+      context.stroke()
+
+  randomize: (living_cells = 50)->
+    for _ in [0..living_cells]
+      row = parseInt(Math.random() * 20)
+      col = parseInt(Math.random() * 20)
+      @add_living_at([row, col])
         
 #w = new World()
 #w.add_living_at([1,1])
