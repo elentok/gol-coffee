@@ -1,5 +1,19 @@
 class World
-  constructor: ->
+
+  defaults = {
+    size: 50,
+    fgColor: '#00c618',
+    cellSize: 10,
+    initialDensity: 0.2,
+    canvas: 'life-canvas',
+    resize: true
+  }
+
+  constructor: (options) ->
+    @options = $.extend {}, defaults, options
+    if @options.resize
+      $(window).resize =>
+        @resize()
     @living = {}
     
   #coord example: 1,2
@@ -46,54 +60,47 @@ class World
       living_list.push(coord)
     living_list
 
-  draw: (canvasId) ->
-    canvas = document.getElementById canvasId
+  draw: ->
+    canvas = document.getElementById @options.canvasId
     canvas.width = canvas.width
     context = canvas.getContext '2d'
 
-    context.fillStyle = '#444'
-    context.strokeStyle = 'black'
-    context.lineWidth = '1'
-    cell_height = 10
-    cell_width = 10
+    context.fillStyle = @options.fgColor
 
-    min_row = 0
-    min_col = 0
-    max_row = 0
-    max_col = 0
-
+    cellSize = 1.0 * canvas.width / @options.size
     for coord of @living
       [row, col] = @living[coord]
-      min_row = row if row < min_row
-      min_col = col if col < min_col
-      max_row = row if row > max_row
-      max_col = col if col > max_col
-
-    for coord of @living
-      [row, col] = @living[coord]
-      console.log "drawing (#{row}, #{col})"
       context.beginPath()
-      context.rect((row-min_row)*cell_height, (col-min_col)*cell_width, cell_width, cell_height)
+      context.rect(row*cellSize, col*cellSize, cellSize, cellSize)
       context.fill()
-      context.stroke()
 
-  randomize: (living_cells = 50)->
+  randomize: ->
+    living_cells = parseInt(@options.size * @options.size * @options.initialDensity)
+    @living = {}
     for _ in [0..living_cells]
-      row = parseInt(Math.random() * 20)
-      col = parseInt(Math.random() * 20)
+      row = parseInt(Math.random() * @options.size)
+      col = parseInt(Math.random() * @options.size)
       @add_living_at([row, col])
-        
-#w = new World()
-#w.add_living_at([1,1])
-#alert(w._count_surrounding_living([1,1]))
 
-#w.add_living_at([1,2])
-#w.add_living_at([2,1])
-#w.add_living_at([2,2])
-#alert(w._count_surrounding_living([1,1]))
+  start: ->
+    @resize()
+    @randomize()
+    @draw()
 
-    
-    
-    
-  
-  
+    window.setInterval ->
+      world.evolve()
+      world.draw()
+    , 500
+
+  resize: ->
+    canvas = document.getElementById @options.canvasId
+    $canvas = $(canvas)
+    width = Math.min window.innerWidth - 20, 500
+
+    topPadding = $canvas.offset().top + 10
+    height = Math.min window.innerHeight - topPadding, 500
+    size = Math.min width, height
+
+    canvas.width = size
+    canvas.height = size
+    @draw()
