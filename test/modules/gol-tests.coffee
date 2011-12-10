@@ -158,3 +158,30 @@ test "evolve toad #2 becomes toad #1", ->
   expected = ["2,2", "2,3", "2,4", "3,1", "3,2", "3,3"]
   deepEqual world.get_all_living(), expected
 
+test "evolve topmost horizontal blinker does not add items above it", ->
+  world = new World()
+  world.add_living_at([0,0])
+  world.add_living_at([0,1])
+  world.add_living_at([0,2])
+  world.evolve()
+  expected = ["0,1", "1,1"]
+  deepEqual world.get_all_living(), expected
+
+
+test "evolve bottom-most horizontal blinker does not add items above it", ->
+  world = new World({ size: 5 })
+  world.add_living_at([4,0])
+  world.add_living_at([4,1])
+  world.add_living_at([4,2])
+  world.evolve()
+  expected = ["3,1", "4,1"]
+  deepEqual world.get_all_living(), expected
+
+test "evolve right-most horizontal blinker does not add items above it", ->
+  world = new World({ size: 5 })
+  world.add_living_at([0,4])
+  world.add_living_at([1,4])
+  world.add_living_at([2,4])
+  world.evolve()
+  expected = ["1,3", "1,4"]
+  deepEqual world.get_all_living(), expected

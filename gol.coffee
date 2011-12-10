@@ -49,9 +49,13 @@ class World
     for coord of @living
       [coord_row, coord_col] = @living[coord]
       for row in [-1..1]
+        other_row = coord_row + row
+        continue if other_row < 0 or other_row >= @options.size
         for col in [-1..1]
-          test_coord = [coord_row+row,coord_col+col]
-          all_coords[test_coord] = test_coord
+          other_col = coord_col + col
+          continue if other_col < 0 or other_col >= @options.size
+          other_coord = [coord_row+row,coord_col+col]
+          all_coords[other_coord] = other_coord
     all_coords
 
   get_all_living: ->
