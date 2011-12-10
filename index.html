@@ -1,25 +1,31 @@
 <!DOCTYPE html>
-
 <html>
   <head>
     <title>Game of Life</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-    <script type="text/javascript" src="jquery-1.6.4.min.js"></script>
-    <script type="text/javascript" src="gol.js"></script>
-    <link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+    <script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="js/gol.js"></script>
+    <link href="http://fonts.googleapis.com/css?family=Rancho" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="style/style.css" type="text/css" media="screen" charset="utf-8" />
 
     <!-- iPad/iPhone app start -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <!--<link rel="apple-touch-icon" href="hourglass.png"/>-->
+    <link rel="apple-touch-icon" href="icon.png"/>
     <!-- iPad/iPhone app end -->
   </head>
   <body>
+    <h1>Game of Life</h1>
     <canvas id="life-canvas"></canvas>
     <script type="text/javascript">
       var world = new World({ canvasId: 'life-canvas' });
       world.start()
     </script>
+
+    <div class="footer">
+    Written by <a href="http://elentok.com">David Elentok</a>,
+    see the code in <a href="http://github.com/elentok/gol-coffee">github</a>
+    </div>
   </body>
 </html>

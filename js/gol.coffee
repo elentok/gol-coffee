@@ -2,11 +2,13 @@ class World
 
   defaults = {
     size: 50,
-    fgColor: '#00c618',
+    fgColor: '#00a214',
     cellSize: 10,
     initialDensity: 0.2,
     canvas: 'life-canvas',
-    resize: true
+    resize: true,
+    updateInterval: 500,
+    maxSize: 768
   }
 
   constructor: (options) ->
@@ -94,15 +96,16 @@ class World
     window.setInterval ->
       world.evolve()
       world.draw()
-    , 500
+    , @options.updateInterval
 
   resize: ->
     canvas = document.getElementById @options.canvasId
     $canvas = $(canvas)
-    width = Math.min window.innerWidth - 20, 500
+    width = Math.min window.innerWidth - 20, @options.maxSize
 
     topPadding = $canvas.offset().top + 10
-    height = Math.min window.innerHeight - topPadding, 500
+    bottomPadding = 40
+    height = Math.min window.innerHeight - topPadding - bottomPadding, @options.maxSize
     size = Math.min width, height
 
     canvas.width = size
